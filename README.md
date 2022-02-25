@@ -1,2 +1,3 @@
-# Curs-1
+# Curs 1
+
 Materialele de la cursul 1
