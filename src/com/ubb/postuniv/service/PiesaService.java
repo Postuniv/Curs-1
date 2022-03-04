@@ -3,11 +3,10 @@ package com.ubb.postuniv.service;
 import com.ubb.postuniv.domain.Piesa;
 import com.ubb.postuniv.domain.PiesaCuRaportPretStoc;
 import com.ubb.postuniv.domain.PiesaValidator;
+import com.ubb.postuniv.domain.TipPiesaCuMediePreturi;
 import com.ubb.postuniv.repository.InMemoryPiesaRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class PiesaService {
     private InMemoryPiesaRepository piesaRepository;
@@ -37,6 +36,34 @@ public class PiesaService {
                 return Float.compare(o2.valoareRaportPretStoc, o1.valoareRaportPretStoc);
             }
         });
+
+        return result;
+    }
+
+    public List<TipPiesaCuMediePreturi> getTipuriPieseCuMediePreturi() {
+        Map<String, List<Float>> groupings = new HashMap<>();
+        for (Piesa piesa: this.getAll()) {
+            String tip = piesa.getTip();
+            float pret = piesa.getPret();
+            if (groupings.containsKey(tip)) {
+                groupings.get(tip).add(pret);
+            } else {
+                List<Float> prices = new ArrayList<>();
+                prices.add(pret);
+                groupings.put(tip, prices);
+            }
+        }
+
+        List<TipPiesaCuMediePreturi> result = new ArrayList<>();
+        for (String tip : groupings.keySet()) {
+            float medie = 0;
+            for (float pret : groupings.get(tip)) {
+                medie += pret;
+            }
+            medie /= groupings.get(tip).size();
+
+            result.add(new TipPiesaCuMediePreturi(tip, medie));
+        }
 
         return result;
     }
