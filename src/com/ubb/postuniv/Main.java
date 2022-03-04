@@ -1,6 +1,7 @@
 package com.ubb.postuniv;
 
 import com.ubb.postuniv.domain.Piesa;
+import com.ubb.postuniv.domain.PiesaValidator;
 import com.ubb.postuniv.repository.InMemoryPiesaRepository;
 import com.ubb.postuniv.service.PiesaService;
 import com.ubb.postuniv.userInterface.Console;
@@ -20,7 +21,8 @@ public class Main {
 //        System.out.println(lstPiese.get(0).getDenumire()); // Alta piesa
 
         InMemoryPiesaRepository piesaRepository = new InMemoryPiesaRepository();
-        PiesaService piesaService = new PiesaService(piesaRepository);
+        PiesaValidator piesaValidator = new PiesaValidator();
+        PiesaService piesaService = new PiesaService(piesaRepository, piesaValidator);
 
         piesaService.addPiesa("1", "rulment", 100, 13, "SH");
         piesaService.addPiesa("2", "stergator", 50, 135, "OEM");
